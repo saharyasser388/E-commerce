@@ -1,0 +1,23 @@
+
+
+<html>
+    <body>
+        {%if name%}
+        <h1> Hello {{name}} </h1>
+        {%else%}
+        <h1> Hello World </h1>
+        {%endif%} 
+        {% comment %} <ul>
+            {%for order in orders %}
+            <li>{{order.id}}-{{order.customer.first_name}}
+                <ul>
+                        {% for item in order.orderitem_set.all %}
+                            <li>{{ item.product.title }}</li>
+                        {% endfor %}
+                </ul>
+            </li>
+            {%endfor%}
+        </ul> {% endcomment %}
+        
+    </body>
+</html>
