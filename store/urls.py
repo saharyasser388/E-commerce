@@ -1,7 +1,5 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 
-#urlConf
 urlpatterns = [
-    
+    path("store/", include("store.urls")),  # Include store app URLs
 ]

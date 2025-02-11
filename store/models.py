@@ -1,4 +1,5 @@
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class Collection(models.Model):
@@ -96,10 +97,24 @@ class OrderItem(models.Model):
 class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Cart {self.id}"
+
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     quantity = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.title}"
+    
+    def total_price(self):
+        return self.product.unit_price * self.quantity
+
+    class Meta:
+        unique_together = [['cart', 'product']]
+
+
 
 
 
