@@ -143,3 +143,5 @@ class OrderAdmin(admin.ModelAdmin):
     def customer_name(self, order):
         return order.customer.first_name + ' ' + order.customer.last_name
     
+
+    
