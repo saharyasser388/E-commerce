@@ -22,17 +22,16 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 from strawberry.django.views import GraphQLView
 from store.schema import schema
-
-
+from django.views.decorators.csrf import csrf_exempt
 
 admin.site.site_header = "Storefront Admin"
 admin.site.index_title = "Admin"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('graphql/', GraphQLView.as_view(schema = schema)),
-    
-]+ debug_toolbar_urls()
+                  path('admin/', admin.site.urls),
+                  path('graphql/', GraphQLView.as_view(schema=schema)),
+                  path("graphql/", csrf_exempt(GraphQLView.as_view())),  # Disable CSRF for GraphQL
+              ] + debug_toolbar_urls()
 
 if settings.DEBUG:  # Only serve media files in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

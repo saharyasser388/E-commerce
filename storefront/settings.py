@@ -12,14 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -31,7 +29,6 @@ SECRET_KEY = 'django-insecure-51s60x9=2b==l6u(!2)*gt5^uu+2t9g)lpgmsr4@m=^0_3ipgb
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -47,6 +44,7 @@ INSTALLED_APPS = [
     'store',
     'store_custom',
     'tags',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -59,9 +57,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'storefront.urls'
+MIDDLEWARE.remove('django.middleware.csrf.CsrfViewMiddleware')  # Remove CSRF middleware
+
 
 TEMPLATES = [
     {
@@ -82,19 +83,37 @@ TEMPLATES = [
 WSGI_APPLICATION = 'storefront.wsgi.application'
 
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",  # Allow frontend requests
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",  # Trust frontend for CSRF
+]
+
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SECURE = False
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'storefront',
+#         'HOST': 'localhost',
+#         'USER': 'root',
+#         'PASSWORD': 'sahar123',
+#     }
+# }
+
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'storefront',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': 'sahar123',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",  # Database file in the project directory
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -114,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -125,7 +143,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
